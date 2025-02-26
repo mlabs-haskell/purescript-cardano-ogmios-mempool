@@ -12,6 +12,7 @@ module Cardano.Ogmios.Mempool
   , MempoolEnv
   , MempoolMT(MempoolMT)
   , MempoolM
+  , module X
   ) where
 
 import Prelude
@@ -19,18 +20,30 @@ import Prelude
 import Cardano.AsCbor (decodeCbor)
 import Cardano.Kupmios.Logging (Logger, mkLogger)
 import Cardano.Ogmios.Internal.Mempool
-  ( ListenerSet
-  , OgmiosListeners
-  , OgmiosWebSocket
+  ( ReleasedMempool(ReleasedMempool)
+  , MempoolSizeAndCapacity(MempoolSizeAndCapacity)
+  , MempoolSnapshotAcquired
+  , MempoolTransaction(MempoolTransaction)
+  , HasTxR(HasTxR)
+  , MaybeMempoolTransaction(MaybeMempoolTransaction)
   , acquireMempoolSnapshotCall
-  , listeners
   , mempoolSnapshotHasTxCall
   , mempoolSnapshotNextTxCall
   , mempoolSnapshotSizeAndCapacityCall
-  , mkRequestAff
   , releaseMempoolCall
+  , ListenerSet
+  , OgmiosListeners
+  , ListenerId
+  , mkOgmiosCallType
+  , OgmiosWebSocket
+  , WebSocket(WebSocket)
+  , listeners
+  , mkListenerSet
+  , defaultMessageListener
+  , mkOgmiosWebSocketAff
+  , mkRequestAff
   , underlyingWebSocket
-  )
+  ) as X
 import Cardano.Ogmios.Internal.Mempool
   ( MempoolSizeAndCapacity
   , MempoolSnapshotAcquired
@@ -68,7 +81,7 @@ import Effect.Exception (Error, error)
 ----------------
 
 type MempoolEnv =
-  { ogmiosWs :: OgmiosWebSocket
+  { ogmiosWs :: X.OgmiosWebSocket
   , logLevel :: LogLevel
   , customLogger :: Maybe (LogLevel -> Message -> Aff Unit)
   , suppressLogs :: Boolean
@@ -124,7 +137,7 @@ acquireMempoolSnapshot
   :: MempoolM Ogmios.MempoolSnapshotAcquired
 acquireMempoolSnapshot =
   mkOgmiosRequest
-    acquireMempoolSnapshotCall
+    X.acquireMempoolSnapshotCall
     _.acquireMempool
     unit
 
@@ -134,7 +147,7 @@ mempoolSnapshotHasTx
   -> MempoolM Boolean
 mempoolSnapshotHasTx ms txh =
   unwrap <$> mkOgmiosRequest
-    (mempoolSnapshotHasTxCall ms)
+    (X.mempoolSnapshotHasTxCall ms)
     _.mempoolHasTx
     txh
 
@@ -143,7 +156,7 @@ mempoolSnapshotSizeAndCapacity
   -> MempoolM Ogmios.MempoolSizeAndCapacity
 mempoolSnapshotSizeAndCapacity ms =
   mkOgmiosRequest
-    (mempoolSnapshotSizeAndCapacityCall ms)
+    (X.mempoolSnapshotSizeAndCapacityCall ms)
     _.mempoolSizeAndCapacity
     unit
 
@@ -152,7 +165,7 @@ releaseMempool
   -> MempoolM Unit
 releaseMempool ms =
   unit <$ mkOgmiosRequest
-    (releaseMempoolCall ms)
+    (X.releaseMempoolCall ms)
     _.releaseMempool
     unit
 
@@ -161,7 +174,7 @@ mempoolSnapshotNextTx
   -> MempoolM (Maybe Transaction)
 mempoolSnapshotNextTx ms = do
   mbTx <- unwrap <$> mkOgmiosRequest
-    (mempoolSnapshotNextTxCall ms)
+    (X.mempoolSnapshotNextTxCall ms)
     _.mempoolNextTx
     unit
   for mbTx \(Ogmios.MempoolTransaction { raw }) -> do
@@ -175,12 +188,12 @@ mempoolSnapshotNextTx ms = do
 mkOgmiosRequest
   :: forall (request :: Type) (response :: Type)
    . JsonRpc2.JsonRpc2Call request response
-  -> (OgmiosListeners -> ListenerSet request response)
+  -> (X.OgmiosListeners -> X.ListenerSet request response)
   -> request
   -> MempoolM response
 mkOgmiosRequest jsonRpc2Call getLs inp = do
-  listeners' <- asks $ listeners <<< _.ogmiosWs
-  websocket <- asks $ underlyingWebSocket <<< _.ogmiosWs
+  listeners' <- asks $ X.listeners <<< _.ogmiosWs
+  websocket <- asks $ X.underlyingWebSocket <<< _.ogmiosWs
   mkRequest listeners' websocket jsonRpc2Call getLs inp
 
 mkRequest
@@ -188,12 +201,12 @@ mkRequest
    . listeners
   -> JsWebSocket
   -> JsonRpc2.JsonRpc2Call request response
-  -> (listeners -> ListenerSet request response)
+  -> (listeners -> X.ListenerSet request response)
   -> request
   -> MempoolM response
 mkRequest listeners' ws jsonRpc2Call getLs inp = do
   logger <- getLogger
-  liftAff $ mkRequestAff listeners' ws logger jsonRpc2Call getLs inp
+  liftAff $ X.mkRequestAff listeners' ws logger jsonRpc2Call getLs inp
   where
   getLogger :: MempoolM Logger
   getLogger = do
