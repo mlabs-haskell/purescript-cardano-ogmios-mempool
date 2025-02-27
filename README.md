@@ -1,1 +1,1 @@
-# purescript-cardano-ogmios-mempool-provider
+# purescript-cardano-ogmios-mempool
