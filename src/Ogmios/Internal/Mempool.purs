@@ -219,7 +219,7 @@ mkServiceWebSocket lens url continue = do
     true -> do
       lens.logger Debug $
         lens.serviceName <>
-          " WebSocket connection re-established, resending pending requests..."
+          " WebSocket connection re-established"
     false -> do
       lens.logger Debug $ "Connection to " <> lens.serviceName <> " established"
       Ref.write true hasConnectedOnceRef
