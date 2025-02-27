@@ -23,6 +23,7 @@ check-format: check-explicit-exports
 	@purs-tidy check ${ps-sources}
 	@nixpkgs-fmt --check ${nix-sources}
 	@prettier --log-level warn -c ${js-sources}
+	@eslint --quiet ${js-sources}
 
 format:
 	@purs-tidy format-in-place ${ps-sources}

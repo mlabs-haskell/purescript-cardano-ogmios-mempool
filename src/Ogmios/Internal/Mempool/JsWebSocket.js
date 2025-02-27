@@ -10,10 +10,10 @@ class NoPerMessageDeflateWebSocket extends WebSocket {
 }
 
 export function _mkWebSocket(logger) {
-  return (url) => () => {
+  return url => () => {
     try {
       const ws = new ReconnectingWebSocket(url, [], {
-        WebSocket: NoPerMessageDeflateWebSocket,
+        WebSocket: NoPerMessageDeflateWebSocket
       });
       ws.finalizers = [];
       logger("Created a new WebSocket")();
@@ -26,7 +26,7 @@ export function _mkWebSocket(logger) {
 }
 
 export function _onWsConnect(ws) {
-  return (fn) => () => {
+  return fn => () => {
     ws.addEventListener("open", fn);
     ws.finalizers.push(() => {
       ws.removeEventListener("open", fn);
@@ -35,7 +35,7 @@ export function _onWsConnect(ws) {
 }
 
 export function _onWsError(ws) {
-  return (fn) => () => {
+  return fn => () => {
     const listener = function (event) {
       if (
         "message" in event &&
@@ -58,11 +58,11 @@ export function _onWsError(ws) {
 }
 
 export function _removeOnWsError(ws) {
-  return (listener) => () => ws.removeEventListener("error", listener);
+  return listener => () => ws.removeEventListener("error", listener);
 }
 
 export function _onWsMessage(ws) {
-  return (logger) => (fn) => () => {
+  return logger => fn => () => {
     const listener = function func(event) {
       const str = event.data;
       logger(`message: ${str}`)();
@@ -89,7 +89,7 @@ export function _wsFinalize(ws) {
 }
 
 export function _wsSend(ws) {
-  return (logger) => (str) => () => {
+  return logger => str => () => {
     logger(`sending: ${str}`)();
     ws.send(str);
   };
