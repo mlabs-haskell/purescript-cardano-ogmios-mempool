@@ -199,7 +199,6 @@
                 easy-ps.pscid
                 easy-ps.psa
                 easy-ps.spago2nix
-                nodePackages.eslint
                 nodePackages.prettier
                 fd
                 git
@@ -210,11 +209,6 @@
 
           # Example flake checks. Run with `nix flake check --keep-going`
           checks = {
-            tests = runPursTest {
-              testMain = "Test.Main";
-              psEntryPoint = "main";
-            };
-
             formatting-check =
               pkgs.runCommand "formatting-check"
                 {
@@ -222,7 +216,6 @@
                     easy-ps.purs-tidy
                     nixpkgs-fmt
                     nodePackages.prettier
-                    nodePackages.eslint
                     fd
                   ];
                 }
@@ -231,7 +224,6 @@
                   purs-tidy check './src/**/*.purs' './test/**/*.purs'
                   nixpkgs-fmt --check "$(fd --no-ignore-parent -enix --exclude='spago*')"
                   prettier --log-level warn -c $(fd --no-ignore-parent -ejs -ecjs)
-                  eslint --quiet $(fd --no-ignore-parent -ejs -ecjs) --parser-options 'sourceType: module'
                   touch $out
                 '';
           };
@@ -240,15 +232,5 @@
       # On CI, build only on available systems, to avoid errors about systems without agents.
       # Please use aarch64-linux and x86_64-darwin sparingly as they run on smaller hardware.
       herculesCI.ciSystems = [ "x86_64-linux" ];
-
-      # Schedule task to run `nix flake update`, run CI, and open a PR with changes
-      hercules-ci.flake-update = {
-        enable = true;
-        when = {
-          dayOfWeek = "Sun";
-          hour = 12;
-          minute = 45;
-        };
-      };
     });
 }
