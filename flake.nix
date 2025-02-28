@@ -281,11 +281,10 @@
                   ];
                 }
                 ''
-                  cd ${self}
-                  purs-tidy check './src/**/*.purs' './test/**/*.purs'
-                  nixpkgs-fmt --check "$(fd --no-ignore-parent -enix --exclude='spago*')"
-                  prettier --log-level warn -c $(fd --no-ignore-parent -ejs -ecjs)
-                  eslint --quiet $(fd --no-ignore-parent -ejs -ecjs) --parser-options 'sourceType: module' --parser-options 'ecmaVersion: 2016'
+                  cd $TMPDIR
+                  ln -sfn ${nodeModules}/lib/node_modules node_modules
+                  cp -r ${self}/* .
+                  make check-format
                   touch $out
                 '';
           };
