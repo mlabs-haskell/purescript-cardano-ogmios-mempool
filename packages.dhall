@@ -308,7 +308,7 @@ let additions =
           ]
         , repo =
             "https://github.com/mlabs-haskell/purescript-cardano-kupmios-provider"
-        , version = "9caa4a8d7665186ac5818a3a98b976f5f26b6a52"
+        , version = "bcaadf9b37c4c9290b77579d212fd37b06730632"
         }
       }
 
