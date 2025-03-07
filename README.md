@@ -11,4 +11,4 @@ Import the necessary functions to interact with the mempool:
 import Cardano.Ogmios.Mempool (acquireMempoolSnapshot, mempoolSnapshotHasTx, fetchMempoolTxs)
 ```
 
-The user of the package is responsible for initializing and maintaining the WebSocket connection. A CTL test case demonstrating how to create a WebSocket and use the Mempool API is available in [Test.Ctl.Testnet.Contract.OgmiosMempool](https://github.com/Plutonomicon/cardano-transaction-lib/blob/develop/test/Testnet/Contract/OgmiosMempool.purs). This test provides an example of how to interact with the mempool via WebSockets.
+The user of the package is responsible for initializing and maintaining the WebSocket connection. A CTL test case demonstrating how to create a WebSocket and use the Mempool API is available in [Test.Ctl.Testnet.Contract.OgmiosMempool](https://github.com/Plutonomicon/cardano-transaction-lib/blob/7f66b8e660bc0a06ce5738f2f4acf092ae9cb03f/test/Testnet/Contract/OgmiosMempool.purs). This test provides an example of how to interact with the mempool via WebSockets.
