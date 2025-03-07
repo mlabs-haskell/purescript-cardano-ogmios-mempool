@@ -1,0 +1,30 @@
+{ name = "purescript-cardano-ogmios-mempool"
+, dependencies =
+  [ "aeson"
+  , "aff"
+  , "argonaut-codecs"
+  , "arrays"
+  , "bifunctors"
+  , "bytearrays"
+  , "cardano-kupmios-provider"
+  , "cardano-provider"
+  , "cardano-types"
+  , "control"
+  , "effect"
+  , "either"
+  , "exceptions"
+  , "foldable-traversable"
+  , "foreign-object"
+  , "lists"
+  , "maybe"
+  , "monad-logger"
+  , "newtype"
+  , "ordered-collections"
+  , "prelude"
+  , "record"
+  , "refs"
+  , "transformers"
+  ]
+, packages = ./packages.dhall
+, sources = [ "src/**/*.purs" ]
+}
