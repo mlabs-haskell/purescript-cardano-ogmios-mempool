@@ -1,4 +1,4 @@
-{ name = "purescript-cardano-ogmios-mempool"
+{ name = "cardano-ogmios-mempool"
 , dependencies =
   [ "aeson"
   , "aff"

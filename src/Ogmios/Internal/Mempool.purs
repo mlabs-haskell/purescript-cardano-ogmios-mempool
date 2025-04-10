@@ -40,7 +40,7 @@ import Aeson
   , stringifyAeson
   , (.:)
   )
-import Cardano.Provider.TxEvaluation (OgmiosTxId)
+import Cardano.Provider (OgmiosTxId)
 import Cardano.Types.Slot (Slot)
 import Cardano.Types.TransactionHash (TransactionHash)
 import Control.Alt ((<|>))

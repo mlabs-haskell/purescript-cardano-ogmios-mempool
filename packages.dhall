@@ -84,29 +84,6 @@ let additions =
         , repo = "https://github.com/mlabs-haskell/purescript-bytearrays"
         , version = "v1.0.0"
         }
-      , cardano-serialization-lib =
-        { dependencies =
-          [ "aeson"
-          , "argonaut"
-          , "bifunctors"
-          , "bytearrays"
-          , "console"
-          , "effect"
-          , "either"
-          , "enums"
-          , "maybe"
-          , "nullable"
-          , "ordered-collections"
-          , "partial"
-          , "prelude"
-          , "profunctor"
-          , "tuples"
-          , "unsafe-coerce"
-          ]
-        , repo =
-            "https://github.com/mlabs-haskell/purescript-cardano-serialization-lib"
-        , version = "2cd72914b9c427b5d5b4edfd5bc08d5758a01fd4"
-        }
       , cardano-plutus-data-schema =
         { dependencies = [ "prelude" ]
         , repo =
@@ -146,7 +123,7 @@ let additions =
           , "bifunctors"
           , "bytearrays"
           , "cardano-plutus-data-schema"
-          , "cardano-serialization-lib"
+          , "cardano-data-lite"
           , "control"
           , "datetime"
           , "effect"
@@ -185,7 +162,7 @@ let additions =
           , "unsafe-coerce"
           ]
         , repo = "https://github.com/mlabs-haskell/purescript-cardano-types.git"
-        , version = "461c1972a122d2ca54320bd3c63a62e94a0085b5"
+        , version = "v5.0.0"
         }
       , cardano-provider =
         { dependencies =
@@ -194,18 +171,25 @@ let additions =
           , "aff-promise"
           , "affjax"
           , "argonaut-codecs"
+          , "arrays"
+          , "bifunctors"
           , "cardano-types"
-          , "console"
           , "effect"
           , "either"
+          , "exceptions"
+          , "foldable-traversable"
+          , "lists"
           , "maybe"
           , "newtype"
           , "ordered-collections"
           , "prelude"
+          , "strings"
+          , "these"
+          , "tuples"
           , "uint"
           ]
         , repo = "https://github.com/mlabs-haskell/purescript-cardano-provider"
-        , version = "5c45f7def0a29b6653945e107be1b7c738d571d8"
+        , version = "v2.1.0"
         }
       , cardano-key-wallet =
         { dependencies =
@@ -248,6 +232,31 @@ let additions =
             "https://github.com/mlabs-haskell/purescript-cardano-collateral-select"
         , version = "v1.0.0"
         }
+      , cardano-data-lite =
+        { dependencies =
+          [ "aeson"
+          , "aff"
+          , "argonaut"
+          , "bifunctors"
+          , "bytearrays"
+          , "effect"
+          , "either"
+          , "enums"
+          , "maybe"
+          , "newtype"
+          , "nullable"
+          , "ordered-collections"
+          , "partial"
+          , "prelude"
+          , "profunctor"
+          , "spec"
+          , "transformers"
+          , "tuples"
+          , "unsafe-coerce"
+          ]
+        , repo = "https://github.com/mlabs-haskell/purescript-cardano-data-lite"
+        , version = "070a1a502472211853099c2566a7e9100a7b1a61"
+        }
       , cardano-message-signing =
         { dependencies =
           [ "bytearrays"
@@ -265,14 +274,12 @@ let additions =
         { dependencies =
           [ "aeson"
           , "aff"
-          , "aff-promise"
           , "affjax"
           , "arrays"
           , "bifunctors"
           , "bytearrays"
-          , "cardano-key-wallet"
           , "cardano-provider"
-          , "cardano-serialization-lib"
+          , "cardano-data-lite"
           , "cardano-types"
           , "console"
           , "control"
@@ -287,7 +294,6 @@ let additions =
           , "integers"
           , "js-bigints"
           , "js-date"
-          , "lists"
           , "maybe"
           , "monad-logger"
           , "newtype"
@@ -300,7 +306,6 @@ let additions =
           , "strings"
           , "stringutils"
           , "tailrec"
-          , "these"
           , "transformers"
           , "tuples"
           , "uint"
@@ -308,8 +313,8 @@ let additions =
           ]
         , repo =
             "https://github.com/mlabs-haskell/purescript-cardano-kupmios-provider"
-        , version = "bcaadf9b37c4c9290b77579d212fd37b06730632"
+        , version = "v2.1.0"
         }
       }
 
-in  upstream // additions
+in (upstream // additions)
